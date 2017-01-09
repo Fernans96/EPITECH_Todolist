@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MyCardViewStyle"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+
+    <TextView
+        android:id="@+id/ToDotitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:textColor="@color/colorAccent"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/ToDoDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/ToDotitle"
+        android:layout_below="@+id/ToDotitle"
+        android:paddingTop="39dp"
+        android:text="TextView"
+        android:textColor="@color/Indigo200" />
+
+    <TextView
+        android:id="@+id/ToDoDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="Delete"
+        android:textColor="@color/colorAccent" />
+
+</android.support.v7.widget.CardView>
