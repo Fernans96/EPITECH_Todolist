@@ -2,7 +2,8 @@
     <string name="app_name">ACID TODO List</string>
     <string name="action_settings">Options</string>
     <string name="dialog_create_name">Ajouter une note</string>
-    <string name="todotitledialog">Titre:</string>
-    <string name="desctododialog">Description:</string>
-    <string name="checktododialog">Bannière Photo</string>
+    <string name="todotitle">Titre:</string>
+    <string name="tododesc">Description:</string>
+    <string name="checktodo">Bannière Photo</string>
+    <string name="title_activity_edit">EditActivity</string>
 </resources>

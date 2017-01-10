@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="fernandez.quentin.todolist.MainActivity"
+    tools:context="fernandez.quentin.todolist.activity.MainActivity"
     tools:showIn="@layout/activity_main">
 
 
@@ -17,8 +17,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:paddingTop="24px"
-        android:paddingBottom="24px"
-        android:paddingLeft="16px"
-        android:paddingRight="16px"/>
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"/>
 </RelativeLayout>

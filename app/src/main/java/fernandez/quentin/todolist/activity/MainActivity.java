@@ -1,4 +1,4 @@
-package fernandez.quentin.todolist;
+package fernandez.quentin.todolist.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 
+import fernandez.quentin.todolist.R;
 import fernandez.quentin.todolist.helper.SimpleItemTouchHelperCallback;
 import fernandez.quentin.todolist.dialog.CreateDialog;
 import fernandez.quentin.todolist.list.DividerItemDecoration;
@@ -33,7 +34,7 @@ import fernandez.quentin.todolist.tools.PictureTools;
 
 public class MainActivity extends AppCompatActivity {
     public static int RESULT_LOAD_IMAGE = 1;
-    public ToDoAdapter mAdapter = null;
+    public static ToDoAdapter mAdapter = null;
     public JSONObject temp_obj = null;
 
     @Override

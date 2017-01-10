@@ -1,6 +1,9 @@
 package fernandez.quentin.todolist.list;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -20,8 +23,10 @@ import java.util.Collections;
 import java.util.List;
 
 import fernandez.quentin.todolist.R;
+import fernandez.quentin.todolist.activity.EditActivity;
 import fernandez.quentin.todolist.tools.PictureTools;
 
+import static android.support.v4.content.ContextCompat.startActivity;
 import static fernandez.quentin.todolist.tools.PictureTools.convertDpToPx;
 
 /**
@@ -85,33 +90,60 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         updateSharedPref();
     }
 
+    public void updateElem(int pos, JSONObject obj) {
+        _data.remove(pos);
+        _data.add(pos, obj);
+        notifyItemChanged(pos);
+        updateSharedPref();
+    }
+
     @Override
     public int getItemCount() {
         return _data.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public View Card;
 
         public void setInfo(JSONObject obj) {
             TextView ToDotitle = (TextView) Card.findViewById(R.id.ToDotitle);
             TextView ToDoDesc = (TextView) Card.findViewById(R.id.ToDoDesc);
-            ImageView BannerPicture = (ImageView) Card.findViewById(R.id.BannerPicture);
-            LinearLayout CardLinearLayout = (LinearLayout) Card.findViewById(R.id.CardLinearLayout);
 
             try {
                 ToDoDesc.setText(obj.getString("Desc"));
                 ToDotitle.setText(obj.getString("Title"));
-                if (obj.has("picture")) {
-                    FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    DisplayMetrics dm = Card.getResources().getDisplayMetrics();
-                    lp.setMargins(convertDpToPx(16, dm), convertDpToPx(16 + 75, dm), convertDpToPx(16, dm), convertDpToPx(24, dm));
-                    CardLinearLayout.setLayoutParams(lp);
-                    BannerPicture.setImageBitmap(PictureTools.base64ToBitmap(obj.getString("picture")));
-                }
+                InitEditBtn(obj);
+                initBanner(obj);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+
+        private void initBanner(JSONObject obj) throws JSONException {
+            ImageView BannerPicture = (ImageView) Card.findViewById(R.id.BannerPicture);
+            LinearLayout CardLinearLayout = (LinearLayout) Card.findViewById(R.id.CardLinearLayout);
+            if (obj.has("picture")) {
+                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                DisplayMetrics dm = Card.getResources().getDisplayMetrics();
+                lp.setMargins(convertDpToPx(16, dm), convertDpToPx(16 + 75, dm), convertDpToPx(16, dm), convertDpToPx(24, dm));
+                CardLinearLayout.setLayoutParams(lp);
+                BannerPicture.setImageBitmap(PictureTools.base64ToBitmap(obj.getString("picture")));
+            }
+        }
+
+        private void InitEditBtn(final JSONObject obj) {
+            FloatingActionButton EditBTN = (FloatingActionButton) Card.findViewById(R.id.EditBTN);
+            EditBTN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int current_pos = getAdapterPosition();
+                    Intent intent;
+                    intent = new Intent(v.getContext(), EditActivity.class);
+                    intent.putExtra("position", current_pos);
+                    intent.putExtra("jsonobj", obj.toString());
+                    startActivity(v.getContext(), intent, null);
+                }
+            });
         }
 
         public void onItemSelected() {
