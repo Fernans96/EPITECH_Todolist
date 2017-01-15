@@ -5,5 +5,9 @@
     <string name="todotitle">Titre:</string>
     <string name="tododesc">Description:</string>
     <string name="checktodo">Bannière Photo</string>
-    <string name="title_activity_edit">EditActivity</string>
+    <string name="title_activity_edit">Editer une note</string>
+    <string name="todoHours">Heures :</string>
+    <string name="todoDate">Date :</string>
+    <string name="search_title">Search</string>
+    <string name="search_hint">Nom :</string>
 </resources>

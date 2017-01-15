@@ -1,6 +1,5 @@
 package fernandez.quentin.todolist.list;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
@@ -24,6 +23,7 @@ import java.util.List;
 
 import fernandez.quentin.todolist.R;
 import fernandez.quentin.todolist.activity.EditActivity;
+import fernandez.quentin.todolist.activity.MainActivity;
 import fernandez.quentin.todolist.tools.PictureTools;
 
 import static android.support.v4.content.ContextCompat.startActivity;
@@ -47,7 +47,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     }
 
     public ToDoAdapter(JSONArray data, SharedPreferences pref) {
-        _data = new ArrayList<JSONObject>();
+        _data = new ArrayList<>();
         for (int i = 0; i < data.length(); i++) {
             try {
                 _data.add(data.getJSONObject(i));
@@ -108,10 +108,26 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         public void setInfo(JSONObject obj) {
             TextView ToDotitle = (TextView) Card.findViewById(R.id.ToDotitle);
             TextView ToDoDesc = (TextView) Card.findViewById(R.id.ToDoDesc);
-
+            FloatingActionButton StateBTN = (FloatingActionButton) Card.findViewById(R.id.StateBTN);
             try {
-                ToDoDesc.setText(obj.getString("Desc"));
-                ToDotitle.setText(obj.getString("Title"));
+                ToDoDesc.setText(obj.getString("desc"));
+                ToDotitle.setText(obj.getString("title"));
+                if (!obj.getString("title").contains(MainActivity.Filter)) {
+                    this.Card.setVisibility(View.GONE);
+                } else {
+                    this.Card.setVisibility(View.VISIBLE);
+                }
+                switch (obj.getInt("status")) {
+                    case 0:
+                        StateBTN.setBackgroundColor(Card.getResources().getColor(R.color.undonestate));
+                        break;
+                    case 1:
+                        StateBTN.setBackgroundColor(Card.getResources().getColor(R.color.donestate));
+                        break;
+                    case 2:
+                        StateBTN.setBackgroundColor(Card.getResources().getColor(R.color.elapsedstate));
+                        break;
+                }
                 InitEditBtn(obj);
                 initBanner(obj);
             } catch (JSONException e) {

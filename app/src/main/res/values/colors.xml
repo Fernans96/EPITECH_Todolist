@@ -6,4 +6,8 @@
     <color name="colorAccent">#03A9F4</color>
     <color name="Indigo200">#9FA8DA</color>
     <color name="Green200">#A5D6A7</color>
+
+    <color name="undonestate">#0277BD</color>
+    <color name="donestate">#388E3C</color>
+    <color name="elapsedstate">#C62828</color>
 </resources>

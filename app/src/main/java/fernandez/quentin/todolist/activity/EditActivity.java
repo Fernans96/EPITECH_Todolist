@@ -1,5 +1,7 @@
 package fernandez.quentin.todolist.activity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,12 +17,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import fernandez.quentin.todolist.R;
 import fernandez.quentin.todolist.tools.PictureTools;
@@ -35,6 +43,13 @@ public class EditActivity extends AppCompatActivity {
     private CheckBox _EditCheck = null;
     private ImageView _EditImage = null;
     private FloatingActionButton _saveChange_edit = null;
+    private SimpleDateFormat _date_format = new SimpleDateFormat("dd/MM/yyyy");
+    private SimpleDateFormat _time_format = new SimpleDateFormat("HH:mm");
+    private TimePickerDialog _time = null;
+    private DatePickerDialog _date = null;
+    private EditText _txthours = null;
+    private EditText _txt_date = null;
+    private Calendar _cal = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +62,11 @@ public class EditActivity extends AppCompatActivity {
         _EditDesc = (TextView) findViewById(R.id.EditDesc);
         _EditCheck = (CheckBox) findViewById(R.id.edit_checkbox);
         _EditImage = (ImageView) findViewById(R.id.edit_imageview);
+        _txthours = (EditText) findViewById(R.id.EditHours);
+        _txt_date = (EditText) findViewById(R.id.EditDate);
         _saveChange_edit = (FloatingActionButton) findViewById(R.id.saveChange_edit);
         InitSaveBtn();
+        InitDateTimePicker();
         InitCheckBox();
         ChangePictures();
         try {
@@ -58,8 +76,10 @@ public class EditActivity extends AppCompatActivity {
                 _EditImage.setVisibility(ImageView.VISIBLE);
                 _EditImage.setImageBitmap(PictureTools.base64ToBitmap(_jObj.getString("picture")));
             }
-            _EditTitle.setText(_jObj.getString("Title"));
-            _EditDesc.setText(_jObj.getString("Desc"));
+            _EditTitle.setText(_jObj.getString("title"));
+            _EditDesc.setText(_jObj.getString("desc"));
+            _txthours.setText(_jObj.getString("time"));
+            _txt_date.setText(_jObj.getString("date"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -84,6 +104,7 @@ public class EditActivity extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
                     _jObj.put("picture", PictureTools.bitmapToBase64(bitmap));
                     _EditImage.setImageBitmap(bitmap);
+                    _EditImage.setVisibility(ImageView.VISIBLE);
                 } catch (java.lang.OutOfMemoryError e) {
                     Toast t = Toast.makeText(this,"Image trop grande", Toast.LENGTH_LONG);
                     t.show();
@@ -101,7 +122,10 @@ public class EditActivity extends AppCompatActivity {
                 if (!_EditCheck.isChecked() && _jObj.has("picture"))
                     _jObj.remove("picture");
                 try {
-                    _jObj.put("Title", _EditTitle.getText().toString()).put("Desc", _EditDesc.getText().toString());
+                    _jObj.put("title", _EditTitle.getText().toString())
+                            .put("desc", _EditDesc.getText().toString())
+                            .put("date", _txt_date.getText().toString())
+                            .put("time", _txthours.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -138,5 +162,43 @@ public class EditActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void InitDateTimePicker() {
+        _txthours.setFocusable(false);
+        _txt_date.setFocusable(false);
+        _cal = Calendar.getInstance();
+        _txthours.setText(_time_format.format(_cal.getTime()));
+        _txt_date.setText(_date_format.format(_cal.getTime()));
+        _time = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                _cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                _cal.set(Calendar.MINUTE, minute);
+                _txthours.setText(_time_format.format(_cal.getTime()));
+            }
+        }, _cal.get(Calendar.HOUR_OF_DAY), _cal.get(Calendar.MINUTE), true);
+        _date = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                _cal.set(Calendar.YEAR, year);
+                _cal.set(Calendar.MONTH, month);
+                _cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                _txt_date.setText(_date_format.format(_cal.getTime()));
+            }
+        }, _cal.get(Calendar.YEAR), _cal.get(Calendar.MONTH), _cal.get(Calendar.DAY_OF_MONTH));
+        _txt_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _date.show();
+            }
+        });
+        _txthours.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _time.show();
+            }
+        });
+    }
+
 
 }

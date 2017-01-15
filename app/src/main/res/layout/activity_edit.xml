@@ -53,6 +53,32 @@
             android:id="@+id/EditDesc"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
+        <TextView
+            android:text="@string/todoDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/EditDate"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:text="@string/todoHours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/EditHours"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
         <CheckBox
             android:text="@string/checktodo"
             android:layout_width="match_parent"

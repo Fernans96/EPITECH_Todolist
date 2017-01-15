@@ -1,33 +1,39 @@
 package fernandez.quentin.todolist.activity;
 
+import android.Manifest;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Base64;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-
 import fernandez.quentin.todolist.R;
-import fernandez.quentin.todolist.helper.SimpleItemTouchHelperCallback;
 import fernandez.quentin.todolist.dialog.CreateDialog;
+import fernandez.quentin.todolist.helper.SimpleItemTouchHelperCallback;
 import fernandez.quentin.todolist.list.DividerItemDecoration;
 import fernandez.quentin.todolist.list.ToDoAdapter;
 import fernandez.quentin.todolist.tools.PictureTools;
@@ -35,6 +41,7 @@ import fernandez.quentin.todolist.tools.PictureTools;
 public class MainActivity extends AppCompatActivity {
     public static int RESULT_LOAD_IMAGE = 1;
     public static ToDoAdapter mAdapter = null;
+    public static String Filter = "";
     public JSONObject temp_obj = null;
 
     @Override
@@ -43,10 +50,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         InitData();
         initView();
         initCreateBtn();
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    finish();
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        initSearch(menu);
+        return true;
     }
 
     private void InitData() {
@@ -69,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
@@ -88,6 +123,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void initSearch(Menu menu) {
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        MenuItem _search = menu.findItem(R.id.search);
+        SearchView searchView =
+                (SearchView) MenuItemCompat.getActionView(_search);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Filter = newText;
+                synchronized (mAdapter) {
+                    mAdapter.notifyDataSetChanged();
+                }
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                Filter = "";
+                synchronized (mAdapter) {
+                    mAdapter.notifyDataSetChanged();
+                }
+                return false;
+            }
+        });
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+    }
 
     private void initView() {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
