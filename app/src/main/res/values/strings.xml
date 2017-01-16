@@ -1,13 +1,15 @@
 <resources>
-    <string name="app_name">ACID TODO List</string>
+    <string name="app_name">Note listes</string>
     <string name="action_settings">Options</string>
     <string name="dialog_create_name">Ajouter une note</string>
-    <string name="todotitle">Titre:</string>
+    <string name="todotitle">Titre :</string>
     <string name="tododesc">Description:</string>
     <string name="checktodo">Bannière Photo</string>
-    <string name="title_activity_edit">Editer une note</string>
+    <string name="title_activity_edit">Editer la note</string>
     <string name="todoHours">Heures :</string>
     <string name="todoDate">Date :</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Nom :</string>
+    <string name="state">Status :</string>
+    <string name="title_activity_view">Information sur la note</string>
 </resources>

@@ -24,6 +24,7 @@ import java.util.List;
 import fernandez.quentin.todolist.R;
 import fernandez.quentin.todolist.activity.EditActivity;
 import fernandez.quentin.todolist.activity.MainActivity;
+import fernandez.quentin.todolist.activity.ViewActivity;
 import fernandez.quentin.todolist.tools.PictureTools;
 
 import static android.support.v4.content.ContextCompat.startActivity;
@@ -39,7 +40,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.todoview, parent, false);
         ViewHolder vh = new ViewHolder(v);
@@ -58,6 +58,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         _pref = pref;
     }
 
+    public JSONObject getItem(int position) {
+        return _data.get(position);
+    }
+
     public boolean onItemMove(int from, int to) {
         notifyItemMoved(from, to);
         Collections.swap(_data, from, to);
@@ -67,7 +71,21 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.setInfo(_data.get(position));
+        JSONObject jsobj = _data.get(position);
+        try {
+            if (jsobj.getString("title").toLowerCase().contains(MainActivity.Filter.toLowerCase())) {
+                holder.setInfo(jsobj);
+                holder.Card.setVisibility(View.VISIBLE);
+            } else {
+                RecyclerView.LayoutParams param = (RecyclerView.LayoutParams)holder.Card.getLayoutParams();
+                param.height = 0;
+                param.width = 0;
+                holder.Card.setLayoutParams(param);
+                holder.Card.setVisibility(View.GONE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addElem(JSONObject obj) {
@@ -106,30 +124,30 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         public View Card;
 
         public void setInfo(JSONObject obj) {
+            RecyclerView.LayoutParams param = (RecyclerView.LayoutParams)Card.getLayoutParams();
+            param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            param.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            Card.setLayoutParams(param);
             TextView ToDotitle = (TextView) Card.findViewById(R.id.ToDotitle);
             TextView ToDoDesc = (TextView) Card.findViewById(R.id.ToDoDesc);
             FloatingActionButton StateBTN = (FloatingActionButton) Card.findViewById(R.id.StateBTN);
             try {
                 ToDoDesc.setText(obj.getString("desc"));
                 ToDotitle.setText(obj.getString("title"));
-                if (!obj.getString("title").contains(MainActivity.Filter)) {
-                    this.Card.setVisibility(View.GONE);
-                } else {
-                    this.Card.setVisibility(View.VISIBLE);
-                }
                 switch (obj.getInt("status")) {
                     case 0:
-                        StateBTN.setBackgroundColor(Card.getResources().getColor(R.color.undonestate));
+                        StateBTN.setBackgroundTintList(Card.getResources().getColorStateList(R.color.undonestate));
                         break;
                     case 1:
-                        StateBTN.setBackgroundColor(Card.getResources().getColor(R.color.donestate));
+                        StateBTN.setBackgroundTintList(Card.getResources().getColorStateList(R.color.donestate));
                         break;
                     case 2:
-                        StateBTN.setBackgroundColor(Card.getResources().getColor(R.color.elapsedstate));
+                        StateBTN.setBackgroundTintList(Card.getResources().getColorStateList(R.color.elapsedstate));
                         break;
                 }
                 InitEditBtn(obj);
                 initBanner(obj);
+                InitViewActivity(obj);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -160,6 +178,21 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                     startActivity(v.getContext(), intent, null);
                 }
             });
+        }
+
+        private void InitViewActivity(final JSONObject obj) {
+            Card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int current_pos = getAdapterPosition();
+                    Intent intent;
+                    intent = new Intent(v.getContext(), ViewActivity.class);
+                    intent.putExtra("position", current_pos);
+                    intent.putExtra("jsonobj", obj.toString());
+                    startActivity(v.getContext(), intent, null);
+                }
+            });
+
         }
 
         public void onItemSelected() {

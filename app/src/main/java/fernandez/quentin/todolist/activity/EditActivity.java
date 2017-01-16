@@ -38,8 +38,8 @@ import static fernandez.quentin.todolist.activity.MainActivity.RESULT_LOAD_IMAGE
 public class EditActivity extends AppCompatActivity {
     private int _position = 0;
     private JSONObject _jObj = null;
-    private TextView _EditTitle = null;
-    private TextView _EditDesc = null;
+    private EditText _EditTitle = null;
+    private EditText _EditDesc = null;
     private CheckBox _EditCheck = null;
     private ImageView _EditImage = null;
     private FloatingActionButton _saveChange_edit = null;
@@ -58,8 +58,8 @@ public class EditActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String serializedJSON = intent.getStringExtra("jsonobj");
         _position = intent.getIntExtra("position", 0);
-        _EditTitle = (TextView) findViewById(R.id.edit_Title);
-        _EditDesc = (TextView) findViewById(R.id.EditDesc);
+        _EditTitle = (EditText) findViewById(R.id.edit_Title);
+        _EditDesc = (EditText) findViewById(R.id.EditDesc);
         _EditCheck = (CheckBox) findViewById(R.id.edit_checkbox);
         _EditImage = (ImageView) findViewById(R.id.edit_imageview);
         _txthours = (EditText) findViewById(R.id.EditHours);

@@ -55,7 +55,8 @@
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:clickable="true"
-                    app:elevation="0dp" />
+                    app:elevation="0dp"
+                    app:backgroundTint="@color/undonestate" />
 
                 <TextView
                     android:id="@+id/ToDoDesc"
