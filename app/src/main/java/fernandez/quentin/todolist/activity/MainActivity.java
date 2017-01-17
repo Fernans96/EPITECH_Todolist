@@ -46,59 +46,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CheckPermission();
+        checkPermission();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        InitData();
+        initData();
         initView();
         initCreateBtn();
-    }
-
-    private void CheckPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    1);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                } else {
-                    finish();
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        initSearch(menu);
-        return true;
-    }
-
-    private void InitData() {
-        SharedPreferences s = getSharedPreferences("Todo", 0);
-        try {
-            mAdapter = new ToDoAdapter(new JSONArray(s.getString("data", "[]")), s);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void showEditDialog() {
-        CreateDialog cd = new CreateDialog(this);
-        cd.Show();
     }
 
     @Override
@@ -124,6 +79,51 @@ public class MainActivity extends AppCompatActivity {
             }
             temp_obj = null;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    finish();
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        initSearch(menu);
+        return true;
+    }
+
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1);
+        }
+    }
+
+    private void initData() {
+        SharedPreferences s = getSharedPreferences("Todo", 0);
+        try {
+            mAdapter = new ToDoAdapter(new JSONArray(s.getString("data", "[]")), s);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showEditDialog() {
+        CreateDialog cd = new CreateDialog(this);
+        cd.Show();
     }
 
     private void initSearch(Menu menu) {

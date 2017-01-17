@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/EditBTN"
+        android:id="@+id/Card_Button_Edit"
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:layout_gravity="right|top"
@@ -20,7 +20,7 @@
         android:layout_margin="12dp">
 
         <ImageView
-            android:id="@+id/BannerPicture"
+            android:id="@+id/Card_Banner"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:scaleType="centerCrop" />
@@ -34,10 +34,10 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="24dp"
             android:orientation="vertical"
-            android:id="@+id/CardLinearLayout">
+            android:id="@+id/Card_Layout_Linear">
 
             <TextView
-                android:id="@+id/ToDotitle"
+                android:id="@+id/Card_Text_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hello World !"
@@ -51,7 +51,7 @@
                 android:orientation="horizontal">
 
                 <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/StateBTN"
+                    android:id="@+id/Card_Button_State"
                     android:layout_width="50dp"
                     android:layout_gravity="center"
                     android:layout_marginRight="10dp"
@@ -61,7 +61,7 @@
                     android:layout_height="50dp" />
 
                 <TextView
-                    android:id="@+id/ToDoDesc"
+                    android:id="@+id/Card_Text_Desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

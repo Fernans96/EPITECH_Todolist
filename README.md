@@ -1,4 +1,22 @@
 [![Build Status](https://travis-ci.com/Fernans96/EPITECH_Todolist.svg?token=Ryue47FRqKM2wEXzY1EP&branch=master)](https://travis-ci.com/Fernans96/EPITECH_Todolist)
 
-# To_Do list [EPITECH PROJECT]
-
+# Task List [EPITECH PROJECT]
+## Goal
+Create a To Do List application which can create, delete, edit a task.
+## Screenshot
+### Main page
+![](https://github.com/Fernans96/EPITECH_Todolist/blob/master/screenshot/main.png)
+### Create
+![](https://github.com/Fernans96/EPITECH_Todolist/blob/master/screenshot/create.png)
+### Edit
+![](https://github.com/Fernans96/EPITECH_Todolist/blob/master/screenshot/edit.png)
+### Search
+![](https://github.com/Fernans96/EPITECH_Todolist/blob/master/screenshot/search.png)
+### View
+![](https://github.com/Fernans96/EPITECH_Todolist/blob/master/screenshot/view.png)
+### Move
+![](https://github.com/Fernans96/EPITECH_Todolist/blob/master/screenshot/move.mp4)
+### Delete
+![](https://github.com/Fernans96/EPITECH_Todolist/blob/master/screenshot/move.mp4)
+### Share
+![](https://github.com/Fernans96/EPITECH_Todolist/blob/master/screenshot/share.png)

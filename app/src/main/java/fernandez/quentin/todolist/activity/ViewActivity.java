@@ -25,7 +25,7 @@ import static fernandez.quentin.todolist.tools.PictureTools.convertDpToPx;
 
 public class ViewActivity extends AppCompatActivity {
     private int _position = 0;
-    private JSONObject _jObj = null;
+    private JSONObject _task = null;
     private ImageView _Info_View_Picture = null;
     private TextView _Info_View_Title = null;
     private TextView _Info_View_Desc = null;
@@ -45,7 +45,7 @@ public class ViewActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.ShareBtn) {
-            Share.ShareNote(_jObj, this);
+            Share.ShareTask(_task, this);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -67,11 +67,11 @@ public class ViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    int state = _jObj.getInt("status");
+                    int state = _task.getInt("status");
                     state = (state + 1) % 2;
                     setState(state);
-                    _jObj.put("status", state);
-                    MainActivity.mAdapter.updateElem(_position, _jObj);
+                    _task.put("status", state);
+                    MainActivity.mAdapter.updateElem(_position, _task);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -82,15 +82,15 @@ public class ViewActivity extends AppCompatActivity {
     private void setState(int state) {
         switch (state) {
             case 0:
-                _Info_View_State.setText("Non fait");
+                _Info_View_State.setText("Undone");
                 _Info_View_State_Btn.setBackgroundTintList(getResources().getColorStateList(R.color.undonestate));
                 break;
             case 1:
-                _Info_View_State.setText("Fait");
+                _Info_View_State.setText("Done");
                 _Info_View_State_Btn.setBackgroundTintList(getResources().getColorStateList(R.color.donestate));
                 break;
             case 2:
-                _Info_View_State.setText("Note passée");
+                _Info_View_State.setText("Elasped");
                 _Info_View_State_Btn.setBackgroundTintList(getResources().getColorStateList(R.color.elapsedstate));
                 break;
         }
@@ -101,7 +101,7 @@ public class ViewActivity extends AppCompatActivity {
         String serializedJSON = intent.getStringExtra("jsonobj");
 
         _position = intent.getIntExtra("position", 0);
-        _jObj = new JSONObject(serializedJSON);
+        _task = new JSONObject(serializedJSON);
         _Info_View_Title = (TextView) findViewById(R.id.Info_View_Title);
         _Info_View_Desc = (TextView) findViewById(R.id.Info_View_Desc);
         _Info_View_Date = (TextView) findViewById(R.id.Info_View_Date);
@@ -111,18 +111,18 @@ public class ViewActivity extends AppCompatActivity {
         _Info_View_Picture = (ImageView) findViewById(R.id.Info_View_Picture);
         _Info_View_LinearLayout = (LinearLayout) findViewById(R.id.Info_View_LinearLayout);
 
-        _Info_View_Title.setText(_jObj.getString("title"));
-        _Info_View_Desc.setText(_jObj.getString("desc"));
-        _Info_View_Date.setText(_jObj.getString("date"));
-        _Info_View_Time.setText(_jObj.getString("time"));
-        if (_jObj.has("picture")) {
+        _Info_View_Title.setText(_task.getString("title"));
+        _Info_View_Desc.setText(_task.getString("desc"));
+        _Info_View_Date.setText(_task.getString("date"));
+        _Info_View_Time.setText(_task.getString("time"));
+        if (_task.has("picture")) {
             _Info_View_Picture.setVisibility(ImageView.VISIBLE);
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             DisplayMetrics dm = _Info_View_LinearLayout.getResources().getDisplayMetrics();
             lp.setMargins(convertDpToPx(0, dm), convertDpToPx(75, dm), convertDpToPx(0, dm), convertDpToPx(0, dm));
             _Info_View_LinearLayout.setLayoutParams(lp);
-            _Info_View_Picture.setImageBitmap(PictureTools.base64ToBitmap(_jObj.getString("picture")));
+            _Info_View_Picture.setImageBitmap(PictureTools.base64ToBitmap(_task.getString("picture")));
         }
-        setState(_jObj.getInt("status"));
+        setState(_task.getInt("status"));
     }
 }

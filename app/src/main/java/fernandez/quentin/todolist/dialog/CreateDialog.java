@@ -103,7 +103,7 @@ public class CreateDialog extends AlertDialog.Builder {
 
     private void InitDialog() {
         this.setCancelable(true);
-        this.setPositiveButton("Créer", new DialogInterface.OnClickListener() {
+        this.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 JSONObject obj = new JSONObject();
@@ -129,14 +129,13 @@ public class CreateDialog extends AlertDialog.Builder {
                 }
             }
         });
-        this.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+        this.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
     }
-
 
     public void Show() {
         _Dialog.show();

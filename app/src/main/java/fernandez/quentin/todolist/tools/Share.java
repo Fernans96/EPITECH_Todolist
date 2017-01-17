@@ -16,15 +16,21 @@ import java.util.Date;
  */
 
 public class Share {
-    public static void ShareNote(JSONObject note, Context ctx) {
+
+    /**
+     * Share task in compatible Calendar app
+     * @param task task you want to share
+     * @param ctx Context of your current activity
+     */
+    public static void ShareTask(JSONObject task, Context ctx) {
         SimpleDateFormat _date_format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
-            Date d = _date_format.parse(note.getString("date") + " " + note.getString("time"));
+            Date d = _date_format.parse(task.getString("date") + " " + task.getString("time"));
             Intent intent = new Intent(Intent.ACTION_INSERT)
                     .setData(CalendarContract.Events.CONTENT_URI)
                     .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, d.getTime())
-                    .putExtra(CalendarContract.Events.TITLE, note.getString("title"))
-                    .putExtra(CalendarContract.Events.DESCRIPTION, note.getString("desc"));
+                    .putExtra(CalendarContract.Events.TITLE, task.getString("title"))
+                    .putExtra(CalendarContract.Events.DESCRIPTION, task.getString("desc"));
             ctx.startActivity(intent);
         } catch (ParseException | JSONException e) {
             e.printStackTrace();
