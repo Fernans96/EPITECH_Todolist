@@ -77,9 +77,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         // We only want the active item to change
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
             if (viewHolder instanceof ToDoAdapter.ViewHolder) {
-                // Let the view holder know that this item is being moved or dragged
-                ToDoAdapter.ViewHolder itemViewHolder = (ToDoAdapter.ViewHolder) viewHolder;
-                itemViewHolder.onItemSelected();
             }
         }
 
@@ -93,9 +90,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         viewHolder.itemView.setAlpha(ALPHA_FULL);
 
         if (viewHolder instanceof ToDoAdapter.ViewHolder) {
-            // Tell the view holder it's time to restore the idle state
-            ToDoAdapter.ViewHolder itemViewHolder = (ToDoAdapter.ViewHolder) viewHolder;
-            itemViewHolder.onItemClear();
         }
     }
 }

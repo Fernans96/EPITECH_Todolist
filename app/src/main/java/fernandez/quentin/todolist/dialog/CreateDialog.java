@@ -6,27 +6,22 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import android.os.Build;
 import android.provider.MediaStore;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fernandez.quentin.todolist.activity.MainActivity;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import fernandez.quentin.todolist.R;
+import fernandez.quentin.todolist.activity.MainActivity;
 
 
 /**
@@ -35,16 +30,16 @@ import fernandez.quentin.todolist.R;
 
 public class CreateDialog extends AlertDialog.Builder {
     private MainActivity _mainActivity = null;
-    private EditText _TitleEdit = null;
-    private CheckBox _HasPictures = null;
-    private EditText _DescEdit = null;
+    private EditText _Dialog_Txt_Title = null;
+    private EditText _Dialog_Txt_Time = null;
+    private EditText _Dialog_Txt_Date = null;
+    private EditText _Dialog_Txt_Desc = null;
+    private CheckBox _Dialog_Check_Photo = null;
     private AlertDialog _Dialog = null;
-    private TimePickerDialog _time = null;
-    private DatePickerDialog _date = null;
-    private EditText _txthours = null;
-    private EditText _txt_date = null;
+    private TimePickerDialog _TimePickerDialog = null;
+    private DatePickerDialog _DatePickerDialog = null;
     private Calendar _cal = null;
-    private View _View = null;
+    private View _Dialog_Layout = null;
     private SimpleDateFormat _date_format = new SimpleDateFormat("dd/MM/yyyy");
     private SimpleDateFormat _time_format = new SimpleDateFormat("HH:mm");
 
@@ -53,7 +48,7 @@ public class CreateDialog extends AlertDialog.Builder {
         super(context);
         _mainActivity = (MainActivity) context;
         getAllView();
-        setView(_View);
+        setView(_Dialog_Layout);
         InitDateTimePicker();
         InitDialog();
         _Dialog = this.create();
@@ -61,47 +56,47 @@ public class CreateDialog extends AlertDialog.Builder {
 
     private void getAllView() {
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(_mainActivity);
-        _View = layoutInflaterAndroid.inflate(R.layout.dialog, null);
-        _TitleEdit = (EditText) _View.findViewById(R.id.txt_title);
-        _DescEdit = (EditText) _View.findViewById(R.id.txt_desc);
-        _HasPictures = (CheckBox) _View.findViewById(R.id.HasPictures);
-        _txthours = (EditText) _View.findViewById(R.id.txthours);
-        _txt_date = (EditText) _View.findViewById(R.id.txt_date);
+        _Dialog_Layout = layoutInflaterAndroid.inflate(R.layout.dialog, null);
+        _Dialog_Txt_Title = (EditText) _Dialog_Layout.findViewById(R.id.Dialog_Txt_Title);
+        _Dialog_Txt_Desc = (EditText) _Dialog_Layout.findViewById(R.id.Dialog_Txt_Desc);
+        _Dialog_Txt_Date = (EditText) _Dialog_Layout.findViewById(R.id.Dialog_Txt_Date);
+        _Dialog_Txt_Time = (EditText) _Dialog_Layout.findViewById(R.id.Dialog_Txt_Time);
+        _Dialog_Check_Photo = (CheckBox) _Dialog_Layout.findViewById(R.id.Dialog_Check_Photo);
     }
 
     private void InitDateTimePicker() {
-        _txthours.setFocusable(false);
-        _txt_date.setFocusable(false);
         _cal = Calendar.getInstance();
-        _txthours.setText(_time_format.format(_cal.getTime()));
-        _txt_date.setText(_date_format.format(_cal.getTime()));
-        _time = new TimePickerDialog(_View.getContext(), new TimePickerDialog.OnTimeSetListener() {
+        _Dialog_Txt_Time.setFocusable(false);
+        _Dialog_Txt_Date.setFocusable(false);
+        _Dialog_Txt_Time.setText(_time_format.format(_cal.getTime()));
+        _Dialog_Txt_Date.setText(_date_format.format(_cal.getTime()));
+        _TimePickerDialog = new TimePickerDialog(_Dialog_Layout.getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 _cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 _cal.set(Calendar.MINUTE, minute);
-                _txthours.setText(_time_format.format(_cal.getTime()));
+                _Dialog_Txt_Time.setText(_time_format.format(_cal.getTime()));
             }
         }, _cal.get(Calendar.HOUR_OF_DAY), _cal.get(Calendar.MINUTE), true);
-        _date = new DatePickerDialog(_View.getContext(), new DatePickerDialog.OnDateSetListener() {
+        _DatePickerDialog = new DatePickerDialog(_Dialog_Layout.getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 _cal.set(Calendar.YEAR, year);
                 _cal.set(Calendar.MONTH, month);
                 _cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                _txt_date.setText(_date_format.format(_cal.getTime()));
+                _Dialog_Txt_Date.setText(_date_format.format(_cal.getTime()));
             }
         }, _cal.get(Calendar.YEAR), _cal.get(Calendar.MONTH), _cal.get(Calendar.DAY_OF_MONTH));
-        _txt_date.setOnClickListener(new View.OnClickListener() {
+        _Dialog_Txt_Date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _date.show();
+                _DatePickerDialog.show();
             }
         });
-        _txthours.setOnClickListener(new View.OnClickListener() {
+        _Dialog_Txt_Time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _time.show();
+                _TimePickerDialog.show();
             }
         });
     }
@@ -113,15 +108,15 @@ public class CreateDialog extends AlertDialog.Builder {
             public void onClick(DialogInterface dialog, int which) {
                 JSONObject obj = new JSONObject();
                 try {
-                    obj.put("title", _TitleEdit.getText().toString())
-                            .put("desc", _DescEdit.getText().toString())
-                            .put("date", _txt_date.getText().toString())
-                            .put("time", _txthours.getText().toString())
+                    obj.put("title", _Dialog_Txt_Title.getText().toString())
+                            .put("desc", _Dialog_Txt_Desc.getText().toString())
+                            .put("date", _Dialog_Txt_Date.getText().toString())
+                            .put("time", _Dialog_Txt_Time.getText().toString())
                             .put("status", 0);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if (_HasPictures.isChecked()) {
+                if (_Dialog_Check_Photo.isChecked()) {
                     _mainActivity.temp_obj = obj;
                     Intent i = new Intent(
                             Intent.ACTION_PICK,

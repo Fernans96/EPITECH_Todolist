@@ -9,7 +9,7 @@
 
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/saveChange_edit"
+        android:id="@+id/Edit_Button_Save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:id="@+id/edit_Title"
+            android:id="@+id/Edit_Text_Title"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:id="@+id/EditDesc"
+            android:id="@+id/Edit_Text_Desc"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:id="@+id/EditDate"
+            android:id="@+id/Edit_Text_Date"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -75,22 +75,21 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/EditHours"
+            android:id="@+id/Edit_Text_Time"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <CheckBox
             android:text="@string/checktodo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_checkbox"
+            android:id="@+id/Edit_Check_Pic"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:visibility="gone"
-            android:id="@+id/edit_imageview"
+            android:id="@+id/Edit_Pic"
             android:scaleType="centerCrop" />
 
     </LinearLayout>

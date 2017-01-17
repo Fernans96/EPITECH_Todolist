@@ -123,28 +123,22 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         public View Card;
 
-        public void setInfo(JSONObject obj) {
+        private void setLayoutParam() {
             RecyclerView.LayoutParams param = (RecyclerView.LayoutParams)Card.getLayoutParams();
             param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
             param.width = LinearLayout.LayoutParams.MATCH_PARENT;
             Card.setLayoutParams(param);
+        }
+
+        public void setInfo(JSONObject obj) {
+            setLayoutParam();
             TextView ToDotitle = (TextView) Card.findViewById(R.id.ToDotitle);
             TextView ToDoDesc = (TextView) Card.findViewById(R.id.ToDoDesc);
             FloatingActionButton StateBTN = (FloatingActionButton) Card.findViewById(R.id.StateBTN);
             try {
                 ToDoDesc.setText(obj.getString("desc"));
                 ToDotitle.setText(obj.getString("title"));
-                switch (obj.getInt("status")) {
-                    case 0:
-                        StateBTN.setBackgroundTintList(Card.getResources().getColorStateList(R.color.undonestate));
-                        break;
-                    case 1:
-                        StateBTN.setBackgroundTintList(Card.getResources().getColorStateList(R.color.donestate));
-                        break;
-                    case 2:
-                        StateBTN.setBackgroundTintList(Card.getResources().getColorStateList(R.color.elapsedstate));
-                        break;
-                }
+                InitDoneBTN(StateBTN, obj);
                 InitEditBtn(obj);
                 initBanner(obj);
                 InitViewActivity(obj);
@@ -180,6 +174,34 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
             });
         }
 
+        private void InitDoneBTN(FloatingActionButton StateBTN, final JSONObject obj) throws JSONException {
+            switch (obj.getInt("status")) {
+                case 0:
+                    StateBTN.setBackgroundTintList(Card.getResources().getColorStateList(R.color.undonestate));
+                    break;
+                case 1:
+                    StateBTN.setBackgroundTintList(Card.getResources().getColorStateList(R.color.donestate));
+                    break;
+                case 2:
+                    StateBTN.setBackgroundTintList(Card.getResources().getColorStateList(R.color.elapsedstate));
+                    break;
+            }
+            StateBTN.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        int state = obj.getInt("status");
+                        int current_pos = getAdapterPosition();
+                        state = (state + 1) % 2;
+                        obj.put("status", state);
+                        MainActivity.mAdapter.updateElem(current_pos, obj);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
         private void InitViewActivity(final JSONObject obj) {
             Card.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -192,14 +214,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                     startActivity(v.getContext(), intent, null);
                 }
             });
-
-        }
-
-        public void onItemSelected() {
-
-        }
-
-        public void onItemClear() {
 
         }
 

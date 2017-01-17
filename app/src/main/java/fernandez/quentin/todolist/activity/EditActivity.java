@@ -37,18 +37,18 @@ import static fernandez.quentin.todolist.activity.MainActivity.RESULT_LOAD_IMAGE
 
 public class EditActivity extends AppCompatActivity {
     private int _position = 0;
-    private JSONObject _jObj = null;
-    private EditText _EditTitle = null;
-    private EditText _EditDesc = null;
-    private CheckBox _EditCheck = null;
-    private ImageView _EditImage = null;
-    private FloatingActionButton _saveChange_edit = null;
+    private JSONObject _note = null;
+    private EditText _Edit_Text_Title = null;
+    private EditText _Edit_Text_Desc = null;
+    private CheckBox _Edit_Check_Pic = null;
+    private ImageView _Edit_Pic = null;
+    private FloatingActionButton _Edit_Button_Save = null;
     private SimpleDateFormat _date_format = new SimpleDateFormat("dd/MM/yyyy");
     private SimpleDateFormat _time_format = new SimpleDateFormat("HH:mm");
     private TimePickerDialog _time = null;
     private DatePickerDialog _date = null;
-    private EditText _txthours = null;
-    private EditText _txt_date = null;
+    private EditText _Edit_Text_Time = null;
+    private EditText _Edit_Text_Date = null;
     private Calendar _cal = null;
 
     @Override
@@ -58,28 +58,28 @@ public class EditActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String serializedJSON = intent.getStringExtra("jsonobj");
         _position = intent.getIntExtra("position", 0);
-        _EditTitle = (EditText) findViewById(R.id.edit_Title);
-        _EditDesc = (EditText) findViewById(R.id.EditDesc);
-        _EditCheck = (CheckBox) findViewById(R.id.edit_checkbox);
-        _EditImage = (ImageView) findViewById(R.id.edit_imageview);
-        _txthours = (EditText) findViewById(R.id.EditHours);
-        _txt_date = (EditText) findViewById(R.id.EditDate);
-        _saveChange_edit = (FloatingActionButton) findViewById(R.id.saveChange_edit);
+        _Edit_Text_Title = (EditText) findViewById(R.id.Edit_Text_Title);
+        _Edit_Text_Desc = (EditText) findViewById(R.id.Edit_Text_Desc);
+        _Edit_Check_Pic = (CheckBox) findViewById(R.id.Edit_Check_Pic);
+        _Edit_Pic = (ImageView) findViewById(R.id.Edit_Pic);
+        _Edit_Text_Time = (EditText) findViewById(R.id.Edit_Text_Time);
+        _Edit_Text_Date = (EditText) findViewById(R.id.Edit_Text_Date);
+        _Edit_Button_Save = (FloatingActionButton) findViewById(R.id.Edit_Button_Save);
         InitSaveBtn();
         InitDateTimePicker();
         InitCheckBox();
         ChangePictures();
         try {
-            _jObj = new JSONObject(serializedJSON);
-            if (_jObj.has("picture")) {
-                _EditCheck.setChecked(true);
-                _EditImage.setVisibility(ImageView.VISIBLE);
-                _EditImage.setImageBitmap(PictureTools.base64ToBitmap(_jObj.getString("picture")));
+            _note = new JSONObject(serializedJSON);
+            if (_note.has("picture")) {
+                _Edit_Check_Pic.setChecked(true);
+                _Edit_Pic.setVisibility(ImageView.VISIBLE);
+                _Edit_Pic.setImageBitmap(PictureTools.base64ToBitmap(_note.getString("picture")));
             }
-            _EditTitle.setText(_jObj.getString("title"));
-            _EditDesc.setText(_jObj.getString("desc"));
-            _txthours.setText(_jObj.getString("time"));
-            _txt_date.setText(_jObj.getString("date"));
+            _Edit_Text_Title.setText(_note.getString("title"));
+            _Edit_Text_Desc.setText(_note.getString("desc"));
+            _Edit_Text_Time.setText(_note.getString("time"));
+            _Edit_Text_Date.setText(_note.getString("date"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -102,9 +102,9 @@ public class EditActivity extends AppCompatActivity {
             try {
                 try {
                     Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-                    _jObj.put("picture", PictureTools.bitmapToBase64(bitmap));
-                    _EditImage.setImageBitmap(bitmap);
-                    _EditImage.setVisibility(ImageView.VISIBLE);
+                    _note.put("picture", PictureTools.bitmapToBase64(bitmap));
+                    _Edit_Pic.setImageBitmap(bitmap);
+                    _Edit_Pic.setVisibility(ImageView.VISIBLE);
                 } catch (java.lang.OutOfMemoryError e) {
                     Toast t = Toast.makeText(this,"Image trop grande", Toast.LENGTH_LONG);
                     t.show();
@@ -116,27 +116,27 @@ public class EditActivity extends AppCompatActivity {
     }
 
     private void InitSaveBtn() {
-        _saveChange_edit.setOnClickListener(new View.OnClickListener() {
+        _Edit_Button_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!_EditCheck.isChecked() && _jObj.has("picture"))
-                    _jObj.remove("picture");
+                if (!_Edit_Check_Pic.isChecked() && _note.has("picture"))
+                    _note.remove("picture");
                 try {
-                    _jObj.put("title", _EditTitle.getText().toString())
-                            .put("desc", _EditDesc.getText().toString())
-                            .put("date", _txt_date.getText().toString())
-                            .put("time", _txthours.getText().toString());
+                    _note.put("title", _Edit_Text_Title.getText().toString())
+                            .put("desc", _Edit_Text_Desc.getText().toString())
+                            .put("date", _Edit_Text_Date.getText().toString())
+                            .put("time", _Edit_Text_Time.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                MainActivity.mAdapter.updateElem(_position, _jObj);
+                MainActivity.mAdapter.updateElem(_position, _note);
                 finish();
             }
         });
     }
 
     private void ChangePictures() {
-        _EditImage.setOnClickListener(new View.OnClickListener() {
+        _Edit_Pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(
@@ -148,33 +148,33 @@ public class EditActivity extends AppCompatActivity {
     }
 
     private void InitCheckBox() {
-        _EditCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        _Edit_Check_Pic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!_jObj.has("picture") && isChecked) {
+                if (!_note.has("picture") && isChecked) {
                     Intent i = new Intent(
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(i, MainActivity.RESULT_LOAD_IMAGE);
                 } else {
-                    _EditImage.setVisibility((isChecked) ? ImageView.VISIBLE : ImageView.GONE);
+                    _Edit_Pic.setVisibility((isChecked) ? ImageView.VISIBLE : ImageView.GONE);
                 }
             }
         });
     }
 
     private void InitDateTimePicker() {
-        _txthours.setFocusable(false);
-        _txt_date.setFocusable(false);
+        _Edit_Text_Time.setFocusable(false);
+        _Edit_Text_Date.setFocusable(false);
         _cal = Calendar.getInstance();
-        _txthours.setText(_time_format.format(_cal.getTime()));
-        _txt_date.setText(_date_format.format(_cal.getTime()));
+        _Edit_Text_Time.setText(_time_format.format(_cal.getTime()));
+        _Edit_Text_Date.setText(_date_format.format(_cal.getTime()));
         _time = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 _cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 _cal.set(Calendar.MINUTE, minute);
-                _txthours.setText(_time_format.format(_cal.getTime()));
+                _Edit_Text_Time.setText(_time_format.format(_cal.getTime()));
             }
         }, _cal.get(Calendar.HOUR_OF_DAY), _cal.get(Calendar.MINUTE), true);
         _date = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -183,16 +183,16 @@ public class EditActivity extends AppCompatActivity {
                 _cal.set(Calendar.YEAR, year);
                 _cal.set(Calendar.MONTH, month);
                 _cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                _txt_date.setText(_date_format.format(_cal.getTime()));
+                _Edit_Text_Date.setText(_date_format.format(_cal.getTime()));
             }
         }, _cal.get(Calendar.YEAR), _cal.get(Calendar.MONTH), _cal.get(Calendar.DAY_OF_MONTH));
-        _txt_date.setOnClickListener(new View.OnClickListener() {
+        _Edit_Text_Date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 _date.show();
             }
         });
-        _txthours.setOnClickListener(new View.OnClickListener() {
+        _Edit_Text_Time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 _time.show();

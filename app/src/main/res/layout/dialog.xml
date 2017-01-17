@@ -17,7 +17,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/txt_title"
+        android:id="@+id/Dialog_Txt_Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -26,44 +26,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/tododesc"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/txt_desc"
+        android:id="@+id/Dialog_Txt_Desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/todoDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
+        android:id="@+id/Dialog_Txt_Date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/txt_date"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:text="@string/todoHours"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/todoHours"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
+        android:id="@+id/Dialog_Txt_Time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/txthours"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <CheckBox
-        android:text="@string/checktodo"
+        android:id="@+id/Dialog_Check_Photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/HasPictures" />
+        android:text="@string/checktodo" />
 
 </LinearLayout>

@@ -1,106 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="fernandez.quentin.todolist.activity.ViewActivity">
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/todotitle"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/TitleInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/tododesc"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/DescInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/todoDate"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/DateInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/todoHours"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/HoursInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="@string/state"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal">
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/StateBTN"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_gravity="left"
-            android:layout_margin="5dp"
-            android:clickable="true"
-            app:elevation="0dp"
-            app:backgroundTint="@color/undonestate" />
-
-        <TextView
-            android:id="@+id/State"
-            android:layout_width="match_parent"
-            android:layout_margin="7dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textAlignment="viewStart" />
-    </LinearLayout>
+    android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/ImageInfo"
+        android:id="@+id/Info_View_Picture"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:scaleType="centerCrop"
         android:visibility="gone" />
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/Info_View_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="fernandez.quentin.todolist.activity.ViewActivity">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/todotitle"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/Info_View_Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hello World!"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tododesc"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/Info_View_Desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/todoDate"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/Info_View_Date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="00/00/0000"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/todoHours"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/Info_View_Time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="00:00"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/state"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/Info_View_State_Btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left"
+                android:layout_margin="5dp"
+                android:clickable="true"
+                app:backgroundTint="@color/undonestate"
+                app:elevation="0dp" />
+
+            <TextView
+                android:id="@+id/Info_View_State"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:text="Fait"
+                android:textAlignment="viewStart"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

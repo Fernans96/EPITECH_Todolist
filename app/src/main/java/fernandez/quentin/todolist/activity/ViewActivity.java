@@ -4,8 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -13,36 +19,51 @@ import org.json.JSONObject;
 
 import fernandez.quentin.todolist.R;
 import fernandez.quentin.todolist.tools.PictureTools;
+import fernandez.quentin.todolist.tools.Share;
+
+import static fernandez.quentin.todolist.tools.PictureTools.convertDpToPx;
 
 public class ViewActivity extends AppCompatActivity {
     private int _position = 0;
     private JSONObject _jObj = null;
-    private TextView TitleInfo = null;
-    private TextView DescInfo = null;
-    private TextView DateInfo = null;
-    private TextView HoursInfo = null;
-    private TextView State = null;
-    private FloatingActionButton StateBtn = null;
-    private ImageView ImageInfo = null;
+    private ImageView _Info_View_Picture = null;
+    private TextView _Info_View_Title = null;
+    private TextView _Info_View_Desc = null;
+    private TextView _Info_View_Date = null;
+    private TextView _Info_View_Time = null;
+    private TextView _Info_View_State = null;
+    private FloatingActionButton _Info_View_State_Btn = null;
+    private LinearLayout _Info_View_LinearLayout = null;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menuinfo, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.ShareBtn) {
+            Share.ShareNote(_jObj, this);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
-        Intent intent = getIntent();
-        String serializedJSON = intent.getStringExtra("jsonobj");
-        _position = intent.getIntExtra("position", 0);
         try {
-            _jObj = new JSONObject(serializedJSON);
             init_var();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        InitBtn();
+        initButton();
     }
 
-    private void InitBtn() {
-        StateBtn.setOnClickListener(new View.OnClickListener() {
+    private void initButton() {
+        _Info_View_State_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -61,36 +82,46 @@ public class ViewActivity extends AppCompatActivity {
     private void setState(int state) {
         switch (state) {
             case 0:
-                State.setText("Non fait");
-                StateBtn.setBackgroundTintList(getResources().getColorStateList(R.color.undonestate));
+                _Info_View_State.setText("Non fait");
+                _Info_View_State_Btn.setBackgroundTintList(getResources().getColorStateList(R.color.undonestate));
                 break;
             case 1:
-                State.setText("Fait");
-                StateBtn.setBackgroundTintList(getResources().getColorStateList(R.color.donestate));
+                _Info_View_State.setText("Fait");
+                _Info_View_State_Btn.setBackgroundTintList(getResources().getColorStateList(R.color.donestate));
                 break;
             case 2:
-                State.setText("Note passée");
-                StateBtn.setBackgroundTintList(getResources().getColorStateList(R.color.elapsedstate));
+                _Info_View_State.setText("Note passée");
+                _Info_View_State_Btn.setBackgroundTintList(getResources().getColorStateList(R.color.elapsedstate));
                 break;
         }
     }
 
     private void init_var() throws JSONException {
-        TitleInfo = (TextView) findViewById(R.id.TitleInfo);
-        DescInfo = (TextView) findViewById(R.id.DescInfo);
-        DateInfo = (TextView) findViewById(R.id.DateInfo);
-        HoursInfo = (TextView) findViewById(R.id.HoursInfo);
-        State = (TextView) findViewById(R.id.State);
-        StateBtn = (FloatingActionButton) findViewById(R.id.StateBTN);
-        ImageInfo = (ImageView) findViewById(R.id.ImageInfo);
+        Intent intent = getIntent();
+        String serializedJSON = intent.getStringExtra("jsonobj");
 
-        TitleInfo.setText(_jObj.getString("title"));
-        DescInfo.setText(_jObj.getString("desc"));
-        DateInfo.setText(_jObj.getString("date"));
-        HoursInfo.setText(_jObj.getString("time"));
+        _position = intent.getIntExtra("position", 0);
+        _jObj = new JSONObject(serializedJSON);
+        _Info_View_Title = (TextView) findViewById(R.id.Info_View_Title);
+        _Info_View_Desc = (TextView) findViewById(R.id.Info_View_Desc);
+        _Info_View_Date = (TextView) findViewById(R.id.Info_View_Date);
+        _Info_View_Time = (TextView) findViewById(R.id.Info_View_Time);
+        _Info_View_State = (TextView) findViewById(R.id.Info_View_State);
+        _Info_View_State_Btn = (FloatingActionButton) findViewById(R.id.Info_View_State_Btn);
+        _Info_View_Picture = (ImageView) findViewById(R.id.Info_View_Picture);
+        _Info_View_LinearLayout = (LinearLayout) findViewById(R.id.Info_View_LinearLayout);
+
+        _Info_View_Title.setText(_jObj.getString("title"));
+        _Info_View_Desc.setText(_jObj.getString("desc"));
+        _Info_View_Date.setText(_jObj.getString("date"));
+        _Info_View_Time.setText(_jObj.getString("time"));
         if (_jObj.has("picture")) {
-            ImageInfo.setVisibility(ImageView.VISIBLE);
-            ImageInfo.setImageBitmap(PictureTools.base64ToBitmap(_jObj.getString("picture")));
+            _Info_View_Picture.setVisibility(ImageView.VISIBLE);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            DisplayMetrics dm = _Info_View_LinearLayout.getResources().getDisplayMetrics();
+            lp.setMargins(convertDpToPx(0, dm), convertDpToPx(75, dm), convertDpToPx(0, dm), convertDpToPx(0, dm));
+            _Info_View_LinearLayout.setLayoutParams(lp);
+            _Info_View_Picture.setImageBitmap(PictureTools.base64ToBitmap(_jObj.getString("picture")));
         }
         setState(_jObj.getInt("status"));
     }

@@ -40,8 +40,10 @@
                 android:id="@+id/ToDotitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Hello World !"
                 android:textColor="@color/colorAccent"
-                android:textSize="25dp" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginBottom="10dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -50,19 +52,21 @@
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/StateBTN"
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
+                    android:layout_width="50dp"
                     android:layout_gravity="center"
-                    android:layout_margin="10dp"
+                    android:layout_marginRight="10dp"
                     android:clickable="true"
                     app:elevation="0dp"
-                    app:backgroundTint="@color/undonestate" />
+                    app:backgroundTint="@color/undonestate"
+                    android:layout_height="50dp" />
 
                 <TextView
                     android:id="@+id/ToDoDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/Indigo200" />
+                    android:layout_gravity="center_vertical"
+                    android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
             </LinearLayout>
         </LinearLayout>

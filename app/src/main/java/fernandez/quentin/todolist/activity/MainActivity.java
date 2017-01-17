@@ -1,11 +1,7 @@
 package fernandez.quentin.todolist.activity;
 
 import android.Manifest;
-import android.app.AlarmManager;
 import android.app.SearchManager;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -51,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        CheckPermission();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -58,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
         InitData();
         initView();
         initCreateBtn();
+    }
 
+    private void CheckPermission() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -129,11 +127,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initSearch(Menu menu) {
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem _search = menu.findItem(R.id.search);
-        SearchView searchView =
-                (SearchView) MenuItemCompat.getActionView(_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(_search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -159,8 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
     }
 
     private void initView() {
@@ -171,8 +166,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(24));
         mRecyclerView.setAdapter(mAdapter);
 
-        ItemTouchHelper.Callback callback =
-                new SimpleItemTouchHelperCallback(mAdapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(mRecyclerView);
     }
