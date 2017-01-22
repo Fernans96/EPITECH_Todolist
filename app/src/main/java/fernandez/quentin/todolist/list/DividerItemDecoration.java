@@ -27,16 +27,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         outRect.top = mSpaceHeight;
         outRect.left = mSpaceHeight;
         outRect.right = mSpaceHeight;
-        final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
-        final int position = params.getViewAdapterPosition();
-        if (position >= MainActivity.mAdapter.getItemCount() || position < 0)
-            return;
-        try {
-            if (!MainActivity.mAdapter.getItem(position).getString("title").toLowerCase().contains(MainActivity.Filter.toLowerCase())) {
-                outRect.setEmpty();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (view.getVisibility() == View.GONE) {
             outRect.setEmpty();
         }
     }

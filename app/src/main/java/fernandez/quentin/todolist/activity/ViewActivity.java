@@ -15,17 +15,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import fernandez.quentin.todolist.R;
-import fernandez.quentin.todolist.tools.PictureTools;
+import fernandez.quentin.todolist.model.ToDoObject;
 import fernandez.quentin.todolist.tools.Share;
 
 import static fernandez.quentin.todolist.tools.PictureTools.convertDpToPx;
 
 public class ViewActivity extends AppCompatActivity {
-    private int _position = 0;
-    private JSONObject _task = null;
+    private ToDoObject _task = null;
     private ImageView _Info_View_Picture = null;
     private TextView _Info_View_Title = null;
     private TextView _Info_View_Desc = null;
@@ -66,15 +64,9 @@ public class ViewActivity extends AppCompatActivity {
         _Info_View_State_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    int state = _task.getInt("status");
-                    state = (state + 1) % 2;
-                    setState(state);
-                    _task.put("status", state);
-                    MainActivity.mAdapter.updateElem(_position, _task);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                _task.setState((_task.getState() + 1) % 2);
+                setState(_task.getState());
+                _task.save();
             }
         });
     }
@@ -98,10 +90,10 @@ public class ViewActivity extends AppCompatActivity {
 
     private void init_var() throws JSONException {
         Intent intent = getIntent();
-        String serializedJSON = intent.getStringExtra("jsonobj");
 
-        _position = intent.getIntExtra("position", 0);
-        _task = new JSONObject(serializedJSON);
+        long id = intent.getLongExtra("id_task", 0);
+        _task = ToDoObject.getTask(id);
+
         _Info_View_Title = (TextView) findViewById(R.id.Info_View_Title);
         _Info_View_Desc = (TextView) findViewById(R.id.Info_View_Desc);
         _Info_View_Date = (TextView) findViewById(R.id.Info_View_Date);
@@ -111,18 +103,18 @@ public class ViewActivity extends AppCompatActivity {
         _Info_View_Picture = (ImageView) findViewById(R.id.Info_View_Picture);
         _Info_View_LinearLayout = (LinearLayout) findViewById(R.id.Info_View_LinearLayout);
 
-        _Info_View_Title.setText(_task.getString("title"));
-        _Info_View_Desc.setText(_task.getString("desc"));
-        _Info_View_Date.setText(_task.getString("date"));
-        _Info_View_Time.setText(_task.getString("time"));
-        if (_task.has("picture")) {
+        _Info_View_Title.setText(_task.getTitle());
+        _Info_View_Desc.setText(_task.getDesc());
+        _Info_View_Date.setText(_task.getDate());
+        _Info_View_Time.setText(_task.getTime());
+        if (_task.getPicture() != null) {
             _Info_View_Picture.setVisibility(ImageView.VISIBLE);
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             DisplayMetrics dm = _Info_View_LinearLayout.getResources().getDisplayMetrics();
             lp.setMargins(convertDpToPx(0, dm), convertDpToPx(75, dm), convertDpToPx(0, dm), convertDpToPx(0, dm));
             _Info_View_LinearLayout.setLayoutParams(lp);
-            _Info_View_Picture.setImageBitmap(PictureTools.base64ToBitmap(_task.getString("picture")));
+            _Info_View_Picture.setImageBitmap(_task.getPicture());
         }
-        setState(_task.getInt("status"));
+        setState(_task.getState());
     }
 }

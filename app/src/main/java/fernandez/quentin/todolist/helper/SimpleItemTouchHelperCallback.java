@@ -6,9 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import fernandez.quentin.todolist.list.ToDoAdapter;
 
-/**
- * Created by quent on 09/01/2017.
- */
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     public static final float ALPHA_FULL = 1.0f;

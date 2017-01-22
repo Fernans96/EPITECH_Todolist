@@ -2,6 +2,7 @@ package fernandez.quentin.todolist.dialog;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,15 +14,14 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import fernandez.quentin.todolist.R;
 import fernandez.quentin.todolist.activity.MainActivity;
+import fernandez.quentin.todolist.model.ToDoObject;
 
 
 /**
@@ -101,32 +101,41 @@ public class CreateDialog extends AlertDialog.Builder {
         });
     }
 
+    private void InitCreateBtn() {
+        _Dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (_Dialog_Txt_Title.getText().toString().isEmpty()) {
+                    Toast t = Toast.makeText(_mainActivity, "Please enter a title",  Toast.LENGTH_LONG);
+                    t.show();
+                    return;
+                }
+                ToDoObject obj = ToDoObject.createTask();
+                obj.setTitle(_Dialog_Txt_Title.getText().toString())
+                        .setDesc(_Dialog_Txt_Desc.getText().toString())
+                        .setDate(_Dialog_Txt_Date.getText().toString())
+                        .setTime(_Dialog_Txt_Time.getText().toString());
+                if (_Dialog_Check_Photo.isChecked()) {
+                    Intent i = new Intent(
+                            Intent.ACTION_PICK,
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    _mainActivity.tmp = obj;
+                    _mainActivity.startActivityForResult(i, MainActivity.RESULT_LOAD_IMAGE);
+                    _Dialog.dismiss();
+                } else {
+                    obj.save();
+                    _mainActivity.mAdapter.addElem();
+                    _Dialog.dismiss();
+                }
+            }
+        });
+    }
+
     private void InitDialog() {
         this.setCancelable(true);
         this.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                JSONObject obj = new JSONObject();
-                try {
-                    obj.put("title", _Dialog_Txt_Title.getText().toString())
-                            .put("desc", _Dialog_Txt_Desc.getText().toString())
-                            .put("date", _Dialog_Txt_Date.getText().toString())
-                            .put("time", _Dialog_Txt_Time.getText().toString())
-                            .put("status", 0);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (_Dialog_Check_Photo.isChecked()) {
-                    _mainActivity.temp_obj = obj;
-                    Intent i = new Intent(
-                            Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                    _mainActivity.startActivityForResult(i, MainActivity.RESULT_LOAD_IMAGE);
-                } else {
-                    _mainActivity.mAdapter.addElem(obj);
-                    dialog.dismiss();
-                }
             }
         });
         this.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -139,5 +148,7 @@ public class CreateDialog extends AlertDialog.Builder {
 
     public void Show() {
         _Dialog.show();
+        InitCreateBtn();
     }
+
 }

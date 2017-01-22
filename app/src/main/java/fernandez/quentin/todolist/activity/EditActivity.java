@@ -6,38 +6,30 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Activity;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import fernandez.quentin.todolist.R;
-import fernandez.quentin.todolist.tools.PictureTools;
+import fernandez.quentin.todolist.model.ToDoObject;
 
 import static fernandez.quentin.todolist.activity.MainActivity.RESULT_LOAD_IMAGE;
 
 public class EditActivity extends AppCompatActivity {
-    private int _position = 0;
-    private JSONObject _task = null;
+    private ToDoObject _task = null;
     private EditText _Edit_Text_Title = null;
     private EditText _Edit_Text_Desc = null;
     private EditText _Edit_Text_Time = null;
@@ -68,7 +60,7 @@ public class EditActivity extends AppCompatActivity {
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
@@ -78,25 +70,28 @@ public class EditActivity extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
             try {
-                try {
-                    Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-                    _task.put("picture", PictureTools.bitmapToBase64(bitmap));
-                    _Edit_Pic.setImageBitmap(bitmap);
-                    _Edit_Pic.setVisibility(ImageView.VISIBLE);
-                } catch (java.lang.OutOfMemoryError e) {
-                    Toast t = Toast.makeText(this,"Image trop grande", Toast.LENGTH_LONG);
-                    t.show();
+                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+                if (bitmap.getByteCount() > 10000000) {
+                    throw new java.lang.OutOfMemoryError("Too large pictures");
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+                _task.setPicture(bitmap);
+                _Edit_Pic.setImageBitmap(bitmap);
+                _Edit_Pic.setVisibility(ImageView.VISIBLE);
+            } catch (java.lang.OutOfMemoryError | java.lang.RuntimeException e) {
+                if (_task.getPicture() == null)
+                    _Edit_Check_Pic.setChecked(false);
+                Toast.makeText(this, "Too large picture", Toast.LENGTH_LONG).show();
             }
         }
     }
 
     private void initObject() {
         Intent intent = getIntent();
-        String serializedJSON = intent.getStringExtra("jsonobj");
-        _position = intent.getIntExtra("position", 0);
+        long id = intent.getLongExtra("id_task", 0);
+        if (id == 0) {
+            finish();
+        }
+        _task = ToDoObject.getTask(id);
         _Edit_Text_Title = (EditText) findViewById(R.id.Edit_Text_Title);
         _Edit_Text_Desc = (EditText) findViewById(R.id.Edit_Text_Desc);
         _Edit_Text_Time = (EditText) findViewById(R.id.Edit_Text_Time);
@@ -105,37 +100,28 @@ public class EditActivity extends AppCompatActivity {
         _Edit_Pic = (ImageView) findViewById(R.id.Edit_Pic);
         _Edit_Button_Save = (FloatingActionButton) findViewById(R.id.Edit_Button_Save);
 
-        try {
-            _task = new JSONObject(serializedJSON);
-            if (_task.has("picture")) {
-                _Edit_Check_Pic.setChecked(true);
-                _Edit_Pic.setVisibility(ImageView.VISIBLE);
-                _Edit_Pic.setImageBitmap(PictureTools.base64ToBitmap(_task.getString("picture")));
-            }
-            _Edit_Text_Title.setText(_task.getString("title"));
-            _Edit_Text_Desc.setText(_task.getString("desc"));
-            _Edit_Text_Time.setText(_task.getString("time"));
-            _Edit_Text_Date.setText(_task.getString("date"));
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (_task.getPicture() != null) {
+            _Edit_Check_Pic.setChecked(true);
+            _Edit_Pic.setVisibility(ImageView.VISIBLE);
+            _Edit_Pic.setImageBitmap(_task.getPicture());
         }
+        _Edit_Text_Title.setText(_task.getTitle());
+        _Edit_Text_Desc.setText(_task.getDesc());
+        _Edit_Text_Time.setText(_task.getTime());
+        _Edit_Text_Date.setText(_task.getDate());
     }
 
     private void initSaveButton() {
         _Edit_Button_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!_Edit_Check_Pic.isChecked() && _task.has("picture"))
-                    _task.remove("picture");
-                try {
-                    _task.put("title", _Edit_Text_Title.getText().toString())
-                            .put("desc", _Edit_Text_Desc.getText().toString())
-                            .put("date", _Edit_Text_Date.getText().toString())
-                            .put("time", _Edit_Text_Time.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                MainActivity.mAdapter.updateElem(_position, _task);
+                if (!_Edit_Check_Pic.isChecked() && _task.getPicture() != null)
+                    _task.setPicture(null);
+                _task.setTitle(_Edit_Text_Title.getText().toString())
+                        .setDesc(_Edit_Text_Desc.getText().toString())
+                        .setDate(_Edit_Text_Date.getText().toString())
+                        .setTime(_Edit_Text_Time.getText().toString());
+                _task.save();
                 finish();
             }
         });
@@ -157,7 +143,7 @@ public class EditActivity extends AppCompatActivity {
         _Edit_Check_Pic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!_task.has("picture") && isChecked) {
+                if (_task.getPicture() == null && isChecked) {
                     Intent i = new Intent(
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

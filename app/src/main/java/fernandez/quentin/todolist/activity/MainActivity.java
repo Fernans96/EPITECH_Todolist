@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -26,23 +25,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.widget.Toast;
 
 import fernandez.quentin.todolist.R;
 import fernandez.quentin.todolist.dialog.CreateDialog;
 import fernandez.quentin.todolist.helper.SimpleItemTouchHelperCallback;
 import fernandez.quentin.todolist.list.DividerItemDecoration;
 import fernandez.quentin.todolist.list.ToDoAdapter;
-import fernandez.quentin.todolist.tools.PictureTools;
+import fernandez.quentin.todolist.model.ToDoObject;
 
 public class MainActivity extends AppCompatActivity {
     public static int RESULT_LOAD_IMAGE = 1;
-    public static ToDoAdapter mAdapter = null;
     public static String Filter = "";
-    public JSONObject temp_obj = null;
+    public ToDoAdapter mAdapter = null;
+    public ToDoObject tmp = null;
+    private CreateDialog _cd = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +69,20 @@ public class MainActivity extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
             try {
-                temp_obj.put("picture", PictureTools.bitmapToBase64(BitmapFactory.decodeFile(picturePath)));
-                mAdapter.addElem(new JSONObject(temp_obj.toString()));
-            } catch (JSONException e) {
-                e.printStackTrace();
+                tmp.setPicture(BitmapFactory.decodeFile(picturePath));
+                if (tmp.getPicture().getByteCount() > 10000000) {
+                    throw new java.lang.OutOfMemoryError("Too large pictures");
+                }
+            } catch (java.lang.OutOfMemoryError e) {
+                tmp.setPicture(null);
+                Toast.makeText(this, "Too large picture", Toast.LENGTH_LONG).show();
             }
-            temp_obj = null;
+            tmp.save();
+            mAdapter.addElem();
+            tmp = null;
+        }
+        if (requestCode == 1000) {
+            mAdapter.updateElems();
         }
     }
 
@@ -113,17 +118,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        SharedPreferences s = getSharedPreferences("Todo", 0);
-        try {
-            mAdapter = new ToDoAdapter(new JSONArray(s.getString("data", "[]")), s);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        mAdapter = new ToDoAdapter(this);
     }
 
     private void showEditDialog() {
-        CreateDialog cd = new CreateDialog(this);
-        cd.Show();
+        _cd = new CreateDialog(this);
+        _cd.Show();
     }
 
     private void initSearch(Menu menu) {
