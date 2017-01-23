@@ -9,14 +9,18 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -27,6 +31,7 @@ import fernandez.quentin.todolist.R;
 import fernandez.quentin.todolist.model.ToDoObject;
 
 import static fernandez.quentin.todolist.activity.MainActivity.RESULT_LOAD_IMAGE;
+import static fernandez.quentin.todolist.tools.PictureTools.convertDpToPx;
 
 public class EditActivity extends AppCompatActivity {
     private ToDoObject _task = null;
@@ -42,6 +47,7 @@ public class EditActivity extends AppCompatActivity {
     private TimePickerDialog _time = null;
     private DatePickerDialog _date = null;
     private Calendar _cal = null;
+    private LinearLayout _Edit_View_LinearLayout = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,10 @@ public class EditActivity extends AppCompatActivity {
                 _task.setPicture(bitmap);
                 _Edit_Pic.setImageBitmap(bitmap);
                 _Edit_Pic.setVisibility(ImageView.VISIBLE);
+                CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                DisplayMetrics dm = _Edit_View_LinearLayout.getResources().getDisplayMetrics();
+                lp.setMargins(convertDpToPx(0, dm), convertDpToPx(75, dm), convertDpToPx(0, dm), convertDpToPx(0, dm));
+                _Edit_View_LinearLayout.setLayoutParams(lp);
             } catch (java.lang.OutOfMemoryError | java.lang.RuntimeException e) {
                 if (_task.getPicture() == null)
                     _Edit_Check_Pic.setChecked(false);
@@ -99,10 +109,15 @@ public class EditActivity extends AppCompatActivity {
         _Edit_Check_Pic = (CheckBox) findViewById(R.id.Edit_Check_Pic);
         _Edit_Pic = (ImageView) findViewById(R.id.Edit_Pic);
         _Edit_Button_Save = (FloatingActionButton) findViewById(R.id.Edit_Button_Save);
+        _Edit_View_LinearLayout = (LinearLayout) findViewById(R.id.Edit_View_LinearLayout);
 
         if (_task.getPicture() != null) {
             _Edit_Check_Pic.setChecked(true);
             _Edit_Pic.setVisibility(ImageView.VISIBLE);
+            CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            DisplayMetrics dm = _Edit_View_LinearLayout.getResources().getDisplayMetrics();
+            lp.setMargins(convertDpToPx(0, dm), convertDpToPx(75, dm), convertDpToPx(0, dm), convertDpToPx(0, dm));
+            _Edit_View_LinearLayout.setLayoutParams(lp);
             _Edit_Pic.setImageBitmap(_task.getPicture());
         }
         _Edit_Text_Title.setText(_task.getTitle());

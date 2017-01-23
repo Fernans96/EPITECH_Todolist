@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#616161</color>
-    <color name="colorPrimaryDark">#212121</color>
-    <color name="colorAccentDark">#01579B</color>
-    <color name="colorAccent">#03A9F4</color>
-    <color name="Indigo200">#9FA8DA</color>
-    <color name="Green200">#A5D6A7</color>
+    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimaryDark">#455A64</color>
+    <color name="colorAccent">#536DFE</color>
+    <color name="colorAccentLight">#C5CAE9</color>
 
-    <color name="undonestate">#0277bd</color>
-    <color name="donestate">#388E3C</color>
-    <color name="elapsedstate">#C62828</color>
+    <color name="BlueGrey50">#ECEFF1</color>
+
+    <color name="cardTitleBack">#37474F</color>
+    <color name="cardBack">#455A64</color>
+
+    <color name="undonestate">#81D4FA</color>
+    <color name="donestate">#80CBC4</color>
+    <color name="elapsedstate">#EF9A9A</color>
 </resources>

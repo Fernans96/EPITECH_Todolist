@@ -33,6 +33,7 @@ import fernandez.quentin.todolist.helper.SimpleItemTouchHelperCallback;
 import fernandez.quentin.todolist.list.DividerItemDecoration;
 import fernandez.quentin.todolist.list.ToDoAdapter;
 import fernandez.quentin.todolist.model.ToDoObject;
+import fernandez.quentin.todolist.tools.Share;
 
 public class MainActivity extends AppCompatActivity {
     public static int RESULT_LOAD_IMAGE = 1;
@@ -105,6 +106,22 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu, menu);
         initSearch(menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.NameSort:
+                mAdapter.NameSort();
+                break;
+            case R.id.StateSort:
+                mAdapter.StateSort();
+                break;
+            case R.id.DateSort:
+                mAdapter.DateSort();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void checkPermission() {

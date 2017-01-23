@@ -87,6 +87,41 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         }
     }
 
+    public void NameSort(){
+        for (int i = 0; i + 1 < _data.size(); i++) {
+            ToDoObject todo1 = _data.get(i);
+            ToDoObject todo2 = _data.get(i + 1);
+            if (todo1.getTitle().compareTo(todo2.getTitle()) > 0) {
+                ToDoObject.swapTask(todo1, todo2);
+                notifyItemMoved(i, i+1);
+                i = -1;
+            }
+        }
+    }
+
+    public void StateSort() {
+        for (int i = 0; i + 1 < _data.size(); i++) {
+            ToDoObject todo1 = _data.get(i);
+            ToDoObject todo2 = _data.get(i + 1);
+            if (todo1.getState() >  todo2.getState()) {
+                ToDoObject.swapTask(todo1, todo2);
+                notifyItemMoved(i, i+1);
+                i = -1;
+            }
+        }
+    }
+
+    public void DateSort() {
+        for (int i = 0; i + 1 < _data.size(); i++) {
+            ToDoObject todo1 = _data.get(i);
+            ToDoObject todo2 = _data.get(i + 1);
+            if (todo1.getTimestamp() >  todo2.getTimestamp()) {
+                ToDoObject.swapTask(todo1, todo2);
+                notifyItemMoved(i, i+1);
+                i = -1;
+            }
+        }
+    }
 
     public void addElem() {
         _data = ToDoObject.getAllTask();
@@ -143,7 +178,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
             if (obj.getPicture() != null) {
                 FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 DisplayMetrics dm = Card.getResources().getDisplayMetrics();
-                lp.setMargins(convertDpToPx(16, dm), convertDpToPx(16 + 75, dm), convertDpToPx(16, dm), convertDpToPx(24, dm));
+                lp.setMargins(convertDpToPx(0, dm), convertDpToPx(75, dm), convertDpToPx(0, dm), convertDpToPx(0, dm));
                 Card_Layout_Linear.setLayoutParams(lp);
                 Card_Banner.setImageBitmap(obj.getPicture());
             }

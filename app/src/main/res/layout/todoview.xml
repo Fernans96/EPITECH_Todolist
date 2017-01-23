@@ -11,44 +11,57 @@
         android:layout_gravity="right|top"
         android:clickable="true"
         app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        android:tint="@color/colorAccentLight"
+        android:background="@color/colorAccent"
+        app:srcCompat="@drawable/ic_mode_edit_white_24dp" />
 
     <android.support.v7.widget.CardView
-        style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp">
+        android:layout_margin="12dp"
+        style="@style/MyCardViewStyle">
 
         <ImageView
             android:id="@+id/Card_Banner"
             android:layout_width="match_parent"
             android:layout_height="75dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"/>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="24dp"
             android:orientation="vertical"
             android:id="@+id/Card_Layout_Linear">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:background="@color/cardTitleBack">
 
             <TextView
                 android:id="@+id/Card_Text_Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hello World !"
-                android:textColor="@color/colorAccent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_marginBottom="10dp" />
+                android:textColor="@android:color/primary_text_dark"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/cardBack"
+                android:paddingTop="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp">
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/Card_Button_State"
@@ -65,6 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:textColor="@android:color/secondary_text_dark"
                     android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 

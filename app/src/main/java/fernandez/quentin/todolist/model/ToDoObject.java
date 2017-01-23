@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import com.orm.SugarRecord;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +103,16 @@ public class ToDoObject extends SugarRecord {
     public ToDoObject setDesc(String desc) {
         _desc = desc;
         return this;
+    }
+
+    public long getTimestamp() {
+        SimpleDateFormat _date_format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        try {
+            return _date_format.parse(_date + " " + _time).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public String getDate() {
