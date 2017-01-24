@@ -85,7 +85,7 @@ public class EditActivity extends AppCompatActivity {
                 _Edit_Pic.setVisibility(ImageView.VISIBLE);
                 CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 DisplayMetrics dm = _Edit_View_LinearLayout.getResources().getDisplayMetrics();
-                lp.setMargins(convertDpToPx(0, dm), convertDpToPx(75, dm), convertDpToPx(0, dm), convertDpToPx(0, dm));
+                lp.setMargins(0, convertDpToPx(75, dm), 0, 0);
                 _Edit_View_LinearLayout.setLayoutParams(lp);
             } catch (java.lang.OutOfMemoryError | java.lang.RuntimeException e) {
                 if (_task.getPicture() == null)
@@ -116,7 +116,7 @@ public class EditActivity extends AppCompatActivity {
             _Edit_Pic.setVisibility(ImageView.VISIBLE);
             CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             DisplayMetrics dm = _Edit_View_LinearLayout.getResources().getDisplayMetrics();
-            lp.setMargins(convertDpToPx(0, dm), convertDpToPx(75, dm), convertDpToPx(0, dm), convertDpToPx(0, dm));
+            lp.setMargins(0, convertDpToPx(75, dm), 0, 0);
             _Edit_View_LinearLayout.setLayoutParams(lp);
             _Edit_Pic.setImageBitmap(_task.getPicture());
         }
@@ -164,7 +164,17 @@ public class EditActivity extends AppCompatActivity {
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(i, MainActivity.RESULT_LOAD_IMAGE);
                 } else {
-                    _Edit_Pic.setVisibility((isChecked) ? ImageView.VISIBLE : ImageView.GONE);
+                    CoordinatorLayout.LayoutParams lp = new CoordinatorLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    if (isChecked) {
+                        _Edit_Pic.setVisibility(ImageView.VISIBLE);
+                        DisplayMetrics dm = _Edit_View_LinearLayout.getResources().getDisplayMetrics();
+                        lp.setMargins(0, convertDpToPx(75, dm), 0, 0);
+                        _Edit_View_LinearLayout.setLayoutParams(lp);
+                    } else {
+                        lp.setMargins(0,0,0,0);
+                        _Edit_View_LinearLayout.setLayoutParams(lp);
+                        _Edit_Pic.setVisibility(ImageView.GONE);
+                    }
                 }
             }
         });

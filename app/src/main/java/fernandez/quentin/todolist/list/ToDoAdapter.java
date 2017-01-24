@@ -175,12 +175,16 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         private void initBanner(ToDoObject obj) throws JSONException {
             ImageView Card_Banner = (ImageView) Card.findViewById(R.id.Card_Banner);
             LinearLayout Card_Layout_Linear = (LinearLayout) Card.findViewById(R.id.Card_Layout_Linear);
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             if (obj.getPicture() != null) {
-                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 DisplayMetrics dm = Card.getResources().getDisplayMetrics();
-                lp.setMargins(convertDpToPx(0, dm), convertDpToPx(75, dm), convertDpToPx(0, dm), convertDpToPx(0, dm));
+                lp.setMargins(0, convertDpToPx(75, dm), 0, 0);
                 Card_Layout_Linear.setLayoutParams(lp);
                 Card_Banner.setImageBitmap(obj.getPicture());
+            } else {
+                lp.setMargins(0,0,0,0);
+                Card_Layout_Linear.setLayoutParams(lp);
+                Card_Banner.setVisibility(ImageView.GONE);
             }
         }
 
