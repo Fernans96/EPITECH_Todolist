@@ -20,3 +20,5 @@ Create a To Do List application which can create, delete, edit a task.
 ![](https://github.com/Fernans96/EPITECH_Todolist/blob/master/screenshot/delete.gif)
 ### Share
 ![](https://github.com/Fernans96/EPITECH_Todolist/blob/master/screenshot/share.png)
+### Sort
+![](https://github.com/Fernans96/EPITECH_Todolist/blob/master/screenshot/sort.png)
