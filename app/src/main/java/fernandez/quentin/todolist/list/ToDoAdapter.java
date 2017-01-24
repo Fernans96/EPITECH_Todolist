@@ -181,6 +181,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 lp.setMargins(0, convertDpToPx(75, dm), 0, 0);
                 Card_Layout_Linear.setLayoutParams(lp);
                 Card_Banner.setImageBitmap(obj.getPicture());
+                Card_Banner.setVisibility(ImageView.VISIBLE);
             } else {
                 lp.setMargins(0,0,0,0);
                 Card_Layout_Linear.setLayoutParams(lp);
