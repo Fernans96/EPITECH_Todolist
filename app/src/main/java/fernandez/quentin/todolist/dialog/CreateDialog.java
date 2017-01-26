@@ -2,7 +2,6 @@ package fernandez.quentin.todolist.dialog;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -106,7 +105,7 @@ public class CreateDialog extends AlertDialog.Builder {
             @Override
             public void onClick(View view) {
                 if (_Dialog_Txt_Title.getText().toString().isEmpty()) {
-                    Toast t = Toast.makeText(_mainActivity, "Please enter a title",  Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(_mainActivity, getContext().getResources().getString(R.string.notiftitle), Toast.LENGTH_LONG);
                     t.show();
                     return;
                 }
@@ -133,12 +132,12 @@ public class CreateDialog extends AlertDialog.Builder {
 
     private void InitDialog() {
         this.setCancelable(true);
-        this.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+        this.setPositiveButton(getContext().getResources().getString(R.string.createbtn), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             }
         });
-        this.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        this.setNegativeButton(getContext().getResources().getString(R.string.cancelbtn), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

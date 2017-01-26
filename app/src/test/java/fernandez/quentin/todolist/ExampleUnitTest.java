@@ -2,6 +2,8 @@ package fernandez.quentin.todolist;
 
 import org.junit.Test;
 
+import fernandez.quentin.todolist.model.ToDoObject;
+
 import static org.junit.Assert.*;
 
 /**

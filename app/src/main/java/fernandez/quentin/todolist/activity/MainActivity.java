@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             } catch (java.lang.OutOfMemoryError e) {
                 tmp.setPicture(null);
-                Toast.makeText(this, "Too large picture", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.largepicturenotif), Toast.LENGTH_LONG).show();
             }
             tmp.save();
             mAdapter.addElem();

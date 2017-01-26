@@ -1,0 +1,25 @@
+    <resources>
+    <string name="app_name">Liste de taches</string>
+    <string name="action_settings">Options</string>
+    <string name="dialog_create_name">Ajouter une tache</string>
+    <string name="todotitle">Titre :</string>
+    <string name="tododesc">Description :</string>
+    <string name="checktodo">Bannière</string>
+    <string name="title_activity_edit">Editer la tache</string>
+    <string name="todoHours">Heure :</string>
+    <string name="todoDate">Date :</string>
+    <string name="search_title">Rechercher</string>
+    <string name="search_hint">Nom :</string>
+    <string name="state">Etat :</string>
+    <string name="title_activity_view">Information sur la tache :</string>
+    <string name="sort_by_name">Trier par nom</string>
+    <string name="sort_by_state">Trier par etat</string>
+    <string name="sort_by_date">Trier par date</string>
+    <string name="createbtn">Créer</string>
+    <string name="cancelbtn">Annuler</string>
+    <string name="notiftitle">Veuillez rentrer un titre</string>
+    <string name="largepicturenotif">Trop grande image</string>
+    <string name="statedone">Fait</string>
+    <string name="stateundone">Non fait</string>
+    <string name="stateelasped">Dépassé</string>
+</resources>

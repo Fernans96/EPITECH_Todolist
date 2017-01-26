@@ -74,15 +74,15 @@ public class ViewActivity extends AppCompatActivity {
     private void setState(int state) {
         switch (state) {
             case 0:
-                _Info_View_State.setText("Undone");
+                _Info_View_State.setText(getResources().getText(R.string.stateundone));
                 _Info_View_State_Btn.setBackgroundTintList(getResources().getColorStateList(R.color.undonestate));
                 break;
             case 1:
-                _Info_View_State.setText("Done");
+                _Info_View_State.setText(getResources().getText(R.string.statedone));
                 _Info_View_State_Btn.setBackgroundTintList(getResources().getColorStateList(R.color.donestate));
                 break;
             case 2:
-                _Info_View_State.setText("Elasped");
+                _Info_View_State.setText(getResources().getText(R.string.stateelasped));
                 _Info_View_State_Btn.setBackgroundTintList(getResources().getColorStateList(R.color.elapsedstate));
                 break;
         }

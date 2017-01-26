@@ -90,7 +90,7 @@ public class EditActivity extends AppCompatActivity {
             } catch (java.lang.OutOfMemoryError | java.lang.RuntimeException e) {
                 if (_task.getPicture() == null)
                     _Edit_Check_Pic.setChecked(false);
-                Toast.makeText(this, "Too large picture", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getString(R.string.largepicturenotif), Toast.LENGTH_LONG).show();
             }
         }
     }

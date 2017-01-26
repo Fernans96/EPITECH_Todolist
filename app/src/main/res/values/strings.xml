@@ -15,4 +15,11 @@
     <string name="sort_by_name">Sort by name</string>
     <string name="sort_by_state">Sort by state</string>
     <string name="sort_by_date">Sort by date</string>
+    <string name="createbtn">Create</string>
+    <string name="cancelbtn">Cancel</string>
+    <string name="notiftitle">Please enter a title</string>
+    <string name="largepicturenotif">Too large picture</string>
+    <string name="statedone">Done</string>
+    <string name="stateundone">Undone</string>
+    <string name="stateelasped">Elasped</string>
 </resources>
