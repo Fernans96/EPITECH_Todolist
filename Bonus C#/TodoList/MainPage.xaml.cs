@@ -42,11 +42,36 @@ namespace TodoList {
 			DescRichText.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(0, 0, 0, 0));
 			List.SelectionChanged += List_SelectionChanged;
 			SaveBtn.Click += SaveBtn_Click;
+			DeletBtn.Click += DeletBtn_Click;
 			Task t = new Task(InitData);
 			t.Start();
 		}
 
+		private void DeletBtn_Click(object sender, RoutedEventArgs e) {
+			_data.RemoveAt(List.SelectedIndex);
+			int current = List.SelectedIndex;
+			refreshList();
+			if (_data.Count < 1) {
+				List.SelectedIndex = -1;
+			} else {
+				List.SelectedIndex = (current < _data.Count) ? current : current - 1;
+			}
+			Save();
+		}
+
+		private void refreshView() {
+			if (List.SelectedIndex >= 0) {
+				ViewNote.Visibility = Visibility.Visible;
+				JsonObject obj = _data.GetObjectAt((uint)List.SelectedIndex);
+				DescRichText.Document.SetText(Windows.UI.Text.TextSetOptions.None, obj.GetNamedString("Desc"));
+				TitleText.Text = obj.GetNamedString("Title");
+			} else {
+				ViewNote.Visibility = Visibility.Collapsed;
+			}
+		}
+
 		private void SaveBtn_Click(object sender, RoutedEventArgs e) {
+			int current = List.SelectedIndex;
 			JsonObject obj = _data.GetObjectAt((uint)List.SelectedIndex);
 			string title = TitleText.Text;
 			string desc = null;
@@ -56,17 +81,11 @@ namespace TodoList {
 			_data[List.SelectedIndex] = obj;
 			Save();
 			refreshList();
+			List.SelectedIndex = current;
 		}
 
 		private void List_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-			if (List.SelectedIndex >= 0) {
-				ViewNote.Visibility = Visibility.Visible;
-				JsonObject obj = _data.GetObjectAt((uint)List.SelectedIndex);
-				DescRichText.Document.SetText(Windows.UI.Text.TextSetOptions.None, obj.GetNamedString("Desc"));
-				TitleText.Text = obj.GetNamedString("Title");
-			} else {
-				ViewNote.Visibility = Visibility.Collapsed;
-			}
+			refreshView();
 		}
 
 		private void refreshList() {
