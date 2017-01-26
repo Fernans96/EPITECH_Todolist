@@ -146,7 +146,7 @@ public class ExampleInstrumentedTest {
             todo.setTime("12:00");
             todo.setState(i % 3);
             todo.setPicture(i % 5 == 0 ? bitmap : null);
-            todo.setTitle("Generate Data : " + (i + 1));
+            todo.setTitle("Generated Data : " + (i + 1));
             todo.setDesc(LoremIpsum);
             todo.save();
         }
